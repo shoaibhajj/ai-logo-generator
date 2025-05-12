@@ -9,12 +9,11 @@ import LogoDesigns from "./components/LogoDesigns";
 import LogoIdeas from "./components/LogoIdeas";
 import PricingModel from "./components/PricingModel";
 import { toast } from "sonner";
-import { useSearchParams } from "next/navigation";
 
 function CreateLogo() {
   const [step, setStep] = useState(1);
-  const searchParam = useSearchParams();
-  const [title, setTitle] = useState(searchParam?.get("title") ?? "");
+
+  const [title, setTitle] = useState("");
   const [formData, setFormData] = useState<{
     title?: string;
     desc?: string;
@@ -25,7 +24,16 @@ function CreateLogo() {
   }>({
     title,
   });
-
+  useEffect(() => {
+    
+    // Get search params on client side only
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const titleParam = params.get("title") ?? "";
+      setTitle(titleParam);
+      setFormData((prev) => ({ ...prev, title: titleParam }));
+    }
+  }, []);
   const handleInputChange = (
     field: string,
     value: string | { title: string; image: string; prompt: string }

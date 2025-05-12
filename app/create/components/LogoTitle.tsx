@@ -1,17 +1,22 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import HeadingDecription from "./HeadingDecription";
 import lookup from "@/app/data/lookup";
-import { useSearchParams } from "next/navigation";
 
 function LogoTitle({
   handleInputChange,
 }: {
   handleInputChange: (val: string) => void;
 }) {
-  const searchParam = useSearchParams();
-  const [title, setTitle] = useState(searchParam?.get("title") ?? "");
-
+  const [title, setTitle] = useState("");
+  useEffect(() => {
+    // Get search params on client side only
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const titleParam = params.get("title") ?? "";
+      setTitle(titleParam);
+    }
+  }, []);
   return (
     <div className="my-10">
       <HeadingDecription
