@@ -56,7 +56,9 @@ function GenerateLogo() {
         prompt: basePrompt,
       });
 
-      const finalPrompt = geminiResponse.data.prompt;
+      const finalPrompt =
+        geminiResponse.data.prompt +
+        "Do not include any human figures, girls, faces, characters, or people. Focus entirely on graphic elements, symbols, text, and abstract or object-based design only.";
 
       // Step 2: Send that prompt to your image model API
       const result = await axios.post("/api/ai-logo-model", {

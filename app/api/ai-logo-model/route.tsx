@@ -13,6 +13,9 @@ cloudinary.config({
 export async function POST(req: Request) {
   const { prompt, email, title, desc } = await req.json();
 
+  const newPrompt =
+    prompt +
+    "   Do not include any human figures, girls, faces, characters, or people. Focus entirely on graphic elements, symbols, text, and abstract or object-based design only.";
   try {
     const aiGirlResponse = await fetch("https://ai-girl.site/api/workerai", {
       method: "POST",
@@ -46,7 +49,7 @@ export async function POST(req: Request) {
     const imageUrl = uploadResult.secure_url;
 
     // ✅ Save metadata to Firestore
-  
+
     await setDoc(doc(db, "users", email, "logos", Date.now().toString()), {
       imageUrl,
       title,
